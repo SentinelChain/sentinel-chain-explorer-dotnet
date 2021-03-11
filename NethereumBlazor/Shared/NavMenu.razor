@@ -1,0 +1,57 @@
+﻿@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">NethereumBlazor</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>*@
+<div class="top-row" style="background-color: transparent;">
+    <!--<a class="navbar-brand" href=""><img id="logo" src="images/sc110x110.png" width="30" height="30" />Sentinel Chain</a>-->
+    <img style="vertical-align:top;" src="images/sc110x110.png" width="40" height="40" />
+    <div style="color:white;font-size:1.8rem;text-align:right;width:100%;padding-right:1.5rem;padding-top:0.5rem">Sentinel Chain</div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        @* <li class="nav-item px-3">
+                <NavLink class="nav-link" href="counter">
+                    <span class="oi oi-plus" aria-hidden="true"></span> Counter
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="fetchdata">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+                </NavLink>
+            </li>*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="accounts">
+                <span class="oi oi-people" aria-hidden="true"></span> Accounts
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="seniTransfer">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Transfer SENI
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="oracleQuery">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Oracle Query
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

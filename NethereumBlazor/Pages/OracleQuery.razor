@@ -1,0 +1,73 @@
+﻿@page "/oracleQuery"
+@using System
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web;
+@using NethereumBlazor.Services
+@using NethereumBlazor.ViewModels
+@using NethereumBlazor.Model
+@inject OracleQueryViewModel OracleQueryViewModel
+@inject IWeb3ProviderService Web3ProviderService
+@inject IOracleQueryService ioracleQueryService
+
+<div class="card">
+    <div class="card-header">
+        <h5>Oracle Query</h5>
+    </div>
+    <div class="card-body">
+
+
+        <EditForm Model=@oracleQuery OnSubmit=@FormSubmitted class="row g-3">
+            <div class="form-group col-sm-7">
+                <label for="seniamount" class="col-form-label">SENI Amount:</label>
+                <input id="seniamount" class="form-control" @bind-value="oracleQuery.Amount" type="text" />
+            </div>
+            <div class=" form-group col-sm-7">
+                <label for="entrypointid" class="col-form-label">EntrypointId:</label>
+                <input id="entrypointid" class="form-control" @bind-value="oracleQuery.EntryPointId" type="text" />
+            </div>
+            <div class="form-group col-sm-7">
+                <label for="parameter" class="col-form-label">Parameters:</label>
+                <input id="parameter" class="form-control" @bind-value="oracleQuery.Parameters" type="text" />
+            </div>
+            <div class="col-12" style="margin-top:10px">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </EditForm>
+
+
+
+    </div>
+</div>
+
+@functions { //workaround search for the time being
+    [Parameter]
+    public string BlockNumber { get; set; }
+    [Parameter]
+    public string TransactionHash { get; set; }
+
+    protected override void OnInitialized()
+    {
+
+        //AccountsViewModel.Accounts.Connect().Subscribe(_ => StateHasChanged());
+
+    }
+
+}
+
+
+@code{
+
+
+    OracleQueryDto oracleQuery = new OracleQueryDto();
+   
+    public async Task FormSubmitted(EditContext editContext)
+    {
+        Console.WriteLine("on submit");
+        var obj = new OracleQueryViewModel(ioracleQueryService);
+        var result =await obj.SubmitOracleQuery(oracleQuery);
+        Console.WriteLine("blazor method: "+result);
+        //oracleQuery.Amount = "5000";
+
+    }
+}
+
