@@ -55,25 +55,5 @@ namespace SentinelChain
             var result = await handler.QueryDeserializingToObjectAsync<BalanceOfOutputDTO>(new BalanceOfFunction { Owner = address }, _contract);
             return result.ReturnValue1;
         }
-      
-        public async Task<TransactionReceipt> TransferAndCallQuery(BigInteger amount, byte[] serialno)
-        {
-            try
-            {
-                var web3 = new Web3(_account, _config.Url);
-                var handler = web3.Eth.GetContractTransactionHandler<TransferAndCallFunction>();
-                var result = await handler.SendRequestAndWaitForReceiptAsync(
-                    _contract,
-                   new TransferAndCallFunction { AmountToSend = amount, Data = serialno, To = "0x6912165b70fe4fa191d95BC6888EF6A232f6c852" }
-                    );
-                return result;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-           
-        }
     }
 }

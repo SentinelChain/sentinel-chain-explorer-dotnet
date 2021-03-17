@@ -1,5 +1,6 @@
 ﻿using DynamicData;
 using Nethereum.ABI.FunctionEncoding;
+using Nethereum.RPC.Eth.DTOs;
 using NethereumBlazor.Model;
 using NethereumBlazor.Services;
 using Newtonsoft.Json;
@@ -21,15 +22,17 @@ namespace NethereumBlazor.ViewModels
          
         }
 
-        public async Task<string> SubmitOracleQuery(OracleQueryDto oracleQuery)
+        public async Task<TransactionReceipt> SubmitOracleQuery(OracleQueryDto oracleQuery)
         {
             try
             {
                 //An error occurred encoding abi value. Order: '1', Type: 'address', Value: 'null'.  Ensure the value is valid for the abi type.
                 //var de = new  ParametersEncoder().EncodeParametersFromTypeAttributes()
+              
+                
                 var queryResult = await _oracleQueryService.SubmitOracleQuery(oracleQuery);
                 Console.WriteLine("submit oracle: " + JsonConvert.SerializeObject(queryResult));
-                return queryResult.TransactionHash;
+                return queryResult;
             }
             catch (Exception ex)
             {

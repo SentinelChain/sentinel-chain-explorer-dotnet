@@ -54,7 +54,11 @@ namespace NethereumBlazor
             
             var seniConfig = new SentinelChainConfiguration()
             {
-                Contracts = new Dictionary<string, string>() { { "senitoken", Configuration.GetValue<string>("ContractAddress") } },
+                Contracts = new Dictionary<string, string>() { 
+                    { "senitoken", Configuration.GetValue<string>("SeniTokenContractAddress") },
+                    { "fosc", Configuration.GetValue<string>("FoscContractAddress") },
+                    { "whitelist", Configuration.GetValue<string>("WhitelistAddress") },
+                },
                 Address = Configuration.GetValue<string>("Address"),
                 PrivateKey = Configuration.GetValue<string>("PrivateKey"),
                 Url = Configuration.GetValue<string>("Url")
@@ -62,8 +66,14 @@ namespace NethereumBlazor
             //var senitokenService = new SeniTokenService(seniConfig, "0x65Cabf6b3B5C9960c5Fa33B2eDF380191355285b");
             var senitokenService = new SeniTokenService(seniConfig, Configuration.GetValue<string>("ContractAddress"));
             services.AddSingleton<SeniTokenService>(senitokenService);
+            
+            var foscService = new FoscService(seniConfig, Configuration.GetValue<string>("FoscContractAddress"));
+            services.AddSingleton<FoscService>(foscService);
 
-            var oracleQueryService = new OracleQueryService(web3ServiceProvider,senitokenService);
+            var ganacheService = new GanacheService(Configuration);
+            services.AddSingleton<GanacheService>(ganacheService);
+
+            var oracleQueryService = new OracleQueryService(foscService,Configuration,ganacheService);
             var oracleQueryViewModel = new OracleQueryViewModel(oracleQueryService);
             services.AddSingleton<IOracleQueryService, OracleQueryService>((x) => oracleQueryService);
             services.AddSingleton<OracleQueryViewModel>(oracleQueryViewModel);
@@ -78,6 +88,9 @@ namespace NethereumBlazor
             services.AddSingleton<Web3UrlViewModel>();
             var toastsViewModel = new ToastsViewModel();
             services.AddSingleton<ToastsViewModel>(toastsViewModel);
+
+           
+
 
         }
 

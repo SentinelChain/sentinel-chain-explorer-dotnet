@@ -1,10 +1,12 @@
 ﻿@page "/oracleQuery"
 @using System
+
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web;
 @using NethereumBlazor.Services
 @using NethereumBlazor.ViewModels
 @using NethereumBlazor.Model
+
 @inject OracleQueryViewModel OracleQueryViewModel
 @inject IWeb3ProviderService Web3ProviderService
 @inject IOracleQueryService ioracleQueryService
@@ -33,7 +35,13 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </EditForm>
-
+        @if (!string.IsNullOrEmpty(transactionId))
+        {
+            <div class="alert alert-primary" style="margin-top: 10px" role="alert">
+                <strong>TransactionId: </strong>@transactionId  <br />
+                <strong>CallId: </strong>
+            </div>
+        }
 
 
     </div>
@@ -56,15 +64,16 @@
 
 
 @code{
-
+    string transactionId = "";
 
     OracleQueryDto oracleQuery = new OracleQueryDto();
-   
+
     public async Task FormSubmitted(EditContext editContext)
     {
         Console.WriteLine("on submit");
         var obj = new OracleQueryViewModel(ioracleQueryService);
         var result =await obj.SubmitOracleQuery(oracleQuery);
+        
         Console.WriteLine("blazor method: "+result);
         //oracleQuery.Amount = "5000";
 

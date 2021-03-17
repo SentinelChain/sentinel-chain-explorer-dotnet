@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FarmTrekv2.Common.Lib">
-      <HintPath>..\..\SentinelChain\Lib\netcoreapp3.1\FarmTrekv2.Common.Lib.dll</HintPath>
+      <HintPath>..\..\sentinel-chain-dotnet\SentinelChain.Tests\Lib\netcoreapp3.1\FarmTrekv2.Common.Lib.dll</HintPath>
     </Reference>
   </ItemGroup>
 
