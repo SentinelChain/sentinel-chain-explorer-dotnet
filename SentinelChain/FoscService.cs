@@ -168,7 +168,8 @@ namespace SentinelChain
             return result;
         }
 
-        public async Task<TransactionReceipt> CallAndTransferGetLivestockInfo(string seniContractAddress, string serialNo, BigInteger callValue)
+        public async Task<TransactionReceipt> CallAndTransferGetLivestockInfo(string seniContractAddress,
+            TransferAndCallDataInput data, BigInteger callValue)
         {
             var web3 = new Web3(_account, _config.Url);
             var handler = web3.Eth.GetContractTransactionHandler<TransferAndCallFunction>();
@@ -176,7 +177,7 @@ namespace SentinelChain
             var functionMsg = new TransferAndCallFunction
             {
                 To = _contract,
-                Data = EncodeHelper.UTF82Bytes(serialNo),
+                Data = data.GetBytes(data),
                 Value = callValue
             };
 

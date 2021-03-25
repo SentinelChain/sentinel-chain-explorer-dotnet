@@ -9,7 +9,7 @@ namespace NethereumBlazor.Services
 {
     public interface IOracleQueryService
     {
-        Task<TransactionReceipt> SubmitOracleQuery(OracleQueryDto query);
+        Task<TransferAndCallOutput> SubmitOracleQuery(OracleQueryDto query);
 
 
     }

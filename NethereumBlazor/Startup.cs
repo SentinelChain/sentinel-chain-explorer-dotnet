@@ -38,7 +38,7 @@ namespace NethereumBlazor
             services.AddSingleton<IAccountsService, AccountsService>((x) => accountsService);
             var newAccountPrivateKeyViewModel = new NewAccountPrivateKeyViewModel();
             var accountsViewModel = new AccountsViewModel(accountsService, newAccountPrivateKeyViewModel);
-           
+
             services.AddSingleton<AccountsViewModel>(accountsViewModel);
             services.AddSingleton<NewAccountPrivateKeyViewModel>(newAccountPrivateKeyViewModel);
             services.AddSingleton<SendSeniTransactionViewModel>();
@@ -51,10 +51,10 @@ namespace NethereumBlazor
             //};
             ////var senitokenService = new SeniTokenService(seniConfig, "0x65Cabf6b3B5C9960c5Fa33B2eDF380191355285b");
             //var senitokenService = new SeniTokenService(seniConfig, "0x6912165b70fe4fa191d95BC6888EF6A232f6c852");
-            
+
             var seniConfig = new SentinelChainConfiguration()
             {
-                Contracts = new Dictionary<string, string>() { 
+                Contracts = new Dictionary<string, string>() {
                     { "senitoken", Configuration.GetValue<string>("SeniTokenContractAddress") },
                     { "fosc", Configuration.GetValue<string>("FoscContractAddress") },
                     { "whitelist", Configuration.GetValue<string>("WhitelistAddress") },
@@ -66,14 +66,12 @@ namespace NethereumBlazor
             //var senitokenService = new SeniTokenService(seniConfig, "0x65Cabf6b3B5C9960c5Fa33B2eDF380191355285b");
             var senitokenService = new SeniTokenService(seniConfig, Configuration.GetValue<string>("ContractAddress"));
             services.AddSingleton<SeniTokenService>(senitokenService);
-            
+
             var foscService = new FoscService(seniConfig, Configuration.GetValue<string>("FoscContractAddress"));
             services.AddSingleton<FoscService>(foscService);
 
-            var ganacheService = new GanacheService(Configuration);
-            services.AddSingleton<GanacheService>(ganacheService);
 
-            var oracleQueryService = new OracleQueryService(foscService,Configuration,ganacheService);
+            var oracleQueryService = new OracleQueryService(foscService, Configuration);
             var oracleQueryViewModel = new OracleQueryViewModel(oracleQueryService);
             services.AddSingleton<IOracleQueryService, OracleQueryService>((x) => oracleQueryService);
             services.AddSingleton<OracleQueryViewModel>(oracleQueryViewModel);
@@ -89,7 +87,7 @@ namespace NethereumBlazor
             var toastsViewModel = new ToastsViewModel();
             services.AddSingleton<ToastsViewModel>(toastsViewModel);
 
-           
+
 
 
         }

@@ -22,7 +22,7 @@ namespace NethereumBlazor.ViewModels
          
         }
 
-        public async Task<TransactionReceipt> SubmitOracleQuery(OracleQueryDto oracleQuery)
+        public async Task<TransferAndCallOutput> SubmitOracleQuery(OracleQueryDto oracleQuery)
         {
             try
             {

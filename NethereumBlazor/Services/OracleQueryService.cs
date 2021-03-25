@@ -38,53 +38,45 @@ namespace NethereumBlazor.Services
         private readonly IWeb3ProviderService _web3ProviderService;
         private readonly SeniTokenService seniTokenService;
         private readonly IFoscService foscService;
-        private GanacheService ganacheService;
         private string senitokenContract;
         private string rpcUrl;
 
-        public OracleQueryService(IFoscService foscService,IConfiguration configuration,GanacheService ganacheService)
+        public OracleQueryService(IFoscService foscService, IConfiguration configuration)
         {
-           
+
             this.foscService = foscService;
-            this.ganacheService = ganacheService;
             //_web3ProviderService = web3ProviderService;
             senitokenContract = configuration.GetValue<string>("SeniTokenContractAddress");
             rpcUrl = configuration.GetValue<string>("Url");
         }
 
-        public async Task<TransactionReceipt> SubmitOracleQuery(OracleQueryDto query)
+        public async Task<TransferAndCallOutput> SubmitOracleQuery(OracleQueryDto query)
         {
             try
             {
-                //byte[] bytes = Encoding.ASCII.GetBytes(query.Parameters);
-                ////var bytes = EncodeHelper.UTF82Bytes(query.Parameters);
-                //var result = await seniTokenService.TransferAndCallQuery(BigInteger.Parse(query.Amount), bytes);
-                //Console.WriteLine("Oracle Result: " + JsonConvert.SerializeObject(result));
+                TransferAndCallDataInput transferAndCallDataInput;
+                transferAndCallDataInput.serialNo = query.Parameters;
+                transferAndCallDataInput.entryPointId = query.EntryPointId;
 
-                var seniConfig = await ganacheService.InitializeProcess();
-                var fosc = new FoscService(seniConfig, seniConfig.Contracts["fosc"]);
-
-                var result = await fosc.CallAndTransferGetLivestockInfo(senitokenContract, query.Parameters, BigInteger.Parse(query.Amount));
-                var addr = seniConfig.Contracts["senitoken"];
-                var result_ = await fosc.CallAndTransferGetLivestockInfo(addr, query.Parameters, BigInteger.Parse(query.Amount));
-                var log = result_.Logs[2];
+                var result = await foscService.CallAndTransferGetLivestockInfo(senitokenContract,
+                    transferAndCallDataInput, BigInteger.Parse(query.Amount));
+                var log = result.Logs[2];
                 var callerId = log["topics"][1];
                 var callId = BigInteger.Parse(log["topics"][2].ToString().Remove(0, 2), System.Globalization.NumberStyles.HexNumber);
 
-                //var result = await foscService.CallAndTransferGetLivestockInfo(senitokenContract, query.Parameters, BigInteger.Parse(query.Amount));
+                TransferAndCallOutput transferAndCallOutput = new TransferAndCallOutput
+                {
+                    TransactionHash = result.TransactionHash,
+                    CallId = callId
+                };
 
-                return result_;
+                return transferAndCallOutput;
             }
             catch (Exception ex)
             {
 
                 throw ex;
             }
-          
         }
-
-
     }
-
-
 }

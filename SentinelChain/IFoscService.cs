@@ -10,7 +10,7 @@ namespace SentinelChain
 {
     public interface IFoscService
     {
-        Task<TransactionReceipt> CallAndTransferGetLivestockInfo(string seniContractAddress, string serialNo, BigInteger callValue);
+        Task<TransactionReceipt> CallAndTransferGetLivestockInfo(string seniContractAddress, TransferAndCallDataInput data, BigInteger callValue);
         Task<CallsOutputDTO> GetCall(BigInteger callId);
         Task<HexBigInteger> GetLatestLogCallFinishedEventsFilter();
         Task<HexBigInteger> GetLatestLogNewAPICallEventsFilter();

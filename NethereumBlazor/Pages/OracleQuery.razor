@@ -35,14 +35,14 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </EditForm>
-        @if (!string.IsNullOrEmpty(transactionId))
+
+        @if (transferAndCallOutput != null)
         {
             <div class="alert alert-primary" style="margin-top: 10px" role="alert">
-                <strong>TransactionId: </strong>@transactionId  <br />
-                <strong>CallId: </strong>
+                TransactionId:<strong> @transferAndCallOutput.TransactionHash</strong> <br />
+                CallId: <strong> @transferAndCallOutput.CallId </strong>
             </div>
         }
-
 
     </div>
 </div>
@@ -64,7 +64,7 @@
 
 
 @code{
-    string transactionId = "";
+    TransferAndCallOutput transferAndCallOutput = null;
 
     OracleQueryDto oracleQuery = new OracleQueryDto();
 
@@ -72,11 +72,11 @@
     {
         Console.WriteLine("on submit");
         var obj = new OracleQueryViewModel(ioracleQueryService);
-        var result =await obj.SubmitOracleQuery(oracleQuery);
-        
-        Console.WriteLine("blazor method: "+result);
-        //oracleQuery.Amount = "5000";
+        var result = await obj.SubmitOracleQuery(oracleQuery);
 
+        transferAndCallOutput = result;
+
+        Console.WriteLine("blazor method: " + result);
     }
 }
 
