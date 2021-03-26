@@ -36,11 +36,25 @@
             </div>
         </EditForm>
 
-        @if (transferAndCallOutput != null)
+        @if (loading == null)
+        {
+
+        }
+        else if (loading == "loading")
+        {
+            <p><em>Loading...</em></p>
+        }
+        else if (loading == "loaded")
         {
             <div class="alert alert-primary" style="margin-top: 10px" role="alert">
-                TransactionId:<strong> @transferAndCallOutput.TransactionHash</strong> <br />
-                CallId: <strong> @transferAndCallOutput.CallId </strong>
+
+                @if (transferAndCallOutput != null)
+                {
+
+                    <p>TransactionId:<strong> @transferAndCallOutput.TransactionHash</strong> </p><br />
+                    <p>CallId <strong> @transferAndCallOutput.CallId </strong></p>
+
+                }
             </div>
         }
 
@@ -64,17 +78,21 @@
 
 
 @code{
+    string loading = null;
     TransferAndCallOutput transferAndCallOutput = null;
 
     OracleQueryDto oracleQuery = new OracleQueryDto();
 
     public async Task FormSubmitted(EditContext editContext)
     {
+        loading = "loading";
         Console.WriteLine("on submit");
         var obj = new OracleQueryViewModel(ioracleQueryService);
         var result = await obj.SubmitOracleQuery(oracleQuery);
 
         transferAndCallOutput = result;
+
+        loading = "loaded";
 
         Console.WriteLine("blazor method: " + result);
     }
